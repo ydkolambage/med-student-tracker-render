@@ -1,0 +1,31 @@
+{% extends "staff/base.html" %}
+{% block title %}Student Search{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">Student Search</div>
+    <h1>Find a student quickly</h1>
+    <form method="get" class="inline">
+        <label>
+            Registration number, name, or batch
+            <input id="q" name="q" value="{{ query }}" placeholder="2025MED0001, Silva, MBBS-2025">
+        </label>
+        <button type="submit">Find</button>
+    </form>
+</section>
+<section class="panel">
+    <table>
+        <thead><tr><th>Student</th><th>Batch</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td><a href="{% url 'student-profile' student.id %}">{{ student.registration_number }}</a><br><span class="muted">{{ student.full_name }}</span></td>
+                <td>{{ student.batch.display_name }}<br><span class="muted">{{ student.batch.code }}</span></td>
+                <td>{{ student.get_status_display }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3">Run a search to see student matches.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

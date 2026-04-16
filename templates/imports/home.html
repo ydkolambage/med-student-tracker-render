@@ -1,0 +1,89 @@
+{% extends "staff/base.html" %}
+{% block title %}Imports{% endblock %}
+{% block content %}
+<style>
+    .imports-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+    .imports-column {
+        display: grid;
+        gap: 1rem;
+        align-content: start;
+    }
+    .imports-column .panel:first-child {
+        min-height: 310px;
+        display: grid;
+        align-content: start;
+    }
+    @media (max-width: 860px) {
+        .imports-grid {
+            grid-template-columns: 1fr;
+        }
+        .imports-column .panel:first-child {
+            min-height: 0;
+        }
+    }
+</style>
+<section class="hero">
+    <div class="eyebrow">Imports</div>
+    <h1>Upload student and result sheets</h1>
+    <p class="muted">Use one shared imports area for student onboarding and exam result uploads, then review accepted rows, duplicates, errors, and publish summaries before data is created.</p>
+</section>
+<section class="imports-grid">
+    <div class="imports-column">
+        <article class="panel">
+            <div class="eyebrow">Student Import</div>
+            <h2>Upload student lists</h2>
+            <p class="muted">Select a batch, upload the workbook, review duplicates and validation issues, then publish student records.</p>
+            <p><a class="pill button-primary" href="{% url 'student-import-new' %}">Open Student Import</a></p>
+        </article>
+        <article class="panel">
+            <div class="eyebrow">Recent Student Uploads</div>
+            <table>
+                <thead><tr><th>Upload</th><th>Batch</th><th>Status</th></tr></thead>
+                <tbody>
+                {% for upload in recent_student_uploads %}
+                    <tr>
+                        <td><a href="{% url 'student-upload-review' upload.id %}">{{ upload.source_filename }}</a></td>
+                        <td>{{ upload.batch.display_name }}</td>
+                        <td>{{ upload.get_status_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="3">No student uploads yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+    </div>
+    <div class="imports-column">
+        <article class="panel">
+            <div class="eyebrow">Results Import</div>
+            <h2>Upload exam results</h2>
+            <p class="muted">Select the batch, stream or subject, and exam in the interface. Streams are reusable across batches, and publishing remains exam-specific.</p>
+            <p><a class="pill button-primary" href="{% url 'result-import-new' %}">Open Results Import</a></p>
+        </article>
+        <article class="panel">
+            <div class="eyebrow">Recent Result Uploads</div>
+            <table>
+                <thead><tr><th>Upload</th><th>Exam</th><th>Status</th></tr></thead>
+                <tbody>
+                {% for upload in recent_result_uploads %}
+                    <tr>
+                        <td><a href="{% url 'upload-review' upload.id %}">v{{ upload.version_number }} {{ upload.source_filename }}</a></td>
+                        <td>{{ upload.exam.title }}<br><span class="muted">{{ upload.exam.module.code }} - {{ upload.exam.batch.display_name }}</span></td>
+                        <td>{{ upload.get_status_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="3">No result uploads yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+

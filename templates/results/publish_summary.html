@@ -1,0 +1,36 @@
+{% extends "staff/base.html" %}
+{% block title %}Publish Upload{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">Publish Confirmation</div>
+    <h1>Confirm result creation for upload v{{ upload.version_number }}</h1>
+    <p class="muted">{{ upload.exam.title }} - {{ upload.exam.module.code }} - {{ upload.exam.batch.display_name }}</p>
+</section>
+<section class="split">
+    <article class="panel">
+        <div class="eyebrow">Publish Summary</div>
+        <div class="stats">
+            <div><div class="eyebrow">Accepted rows</div><div class="stat-value">{{ summary.accepted_rows }}</div></div>
+            <div><div class="eyebrow">Duplicate rows</div><div class="stat-value">{{ summary.duplicate_rows }}</div></div>
+            <div><div class="eyebrow">Rejected rows</div><div class="stat-value">{{ summary.rejected_rows }}</div></div>
+            <div><div class="eyebrow">Already published</div><div class="stat-value">{{ summary.published_rows }}</div></div>
+        </div>
+        <p class="muted">Publishing will create exam results only from accepted staged rows. Rejected and duplicate rows remain visible in review.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Publish Accepted Rows</button>
+        </form>
+    </article>
+    <article class="panel">
+        <div class="eyebrow">Version Context</div>
+        <p>Current upload: v{{ upload.version_number }} from {{ upload.source_filename }}</p>
+        {% if previous_upload %}
+            <p>Previous upload: v{{ previous_upload.version_number }} with {{ previous_upload.staged_rows }} accepted and {{ previous_upload.rejected_rows }} rejected rows.</p>
+        {% else %}
+            <p>No earlier upload exists for this exam.</p>
+        {% endif %}
+        <p><a href="{% url 'upload-review' upload.id %}">Return to staging review</a></p>
+    </article>
+</section>
+{% endblock %}
+

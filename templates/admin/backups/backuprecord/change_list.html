@@ -1,0 +1,15 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+{% if can_run_full_backup %}
+<li>
+    <a href="{{ run_full_backup_url }}">Run full system backup</a>
+</li>
+{% endif %}
+{% if can_register_existing_backup %}
+<li>
+    <a href="{{ register_existing_backup_url }}">Register existing backup</a>
+</li>
+{% endif %}
+{{ block.super }}
+{% endblock %}

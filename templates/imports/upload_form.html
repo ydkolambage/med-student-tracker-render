@@ -1,0 +1,94 @@
+{% extends "staff/base.html" %}
+{% block title %}Results Import{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">Results Import</div>
+    <h1>Stage exam results for review</h1>
+    {% if locked_exam %}
+        <p class="muted">{{ locked_exam.title }} - {{ locked_exam.module.code }} - {{ locked_exam.batch.display_name }} - {{ locked_exam.sat_on }}</p>
+    {% else %}
+        <p class="muted">Select the batch, stream or subject, and exam in the interface. Streams are shared across batches, while each exam remains batch-specific.</p>
+    {% endif %}
+</section>
+<section class="split">
+    <article class="panel">
+        <form method="post" enctype="multipart/form-data" class="stack">
+            {% csrf_token %}
+            <label>
+                Batch number
+                <select name="batch_id" {% if locked_exam %}disabled{% endif %}>
+                    <option value="">Choose a batch</option>
+                    {% for batch in batch_choices %}
+                        <option value="{{ batch.id }}" {% if selected_batch_id == batch.id|stringformat:'s' %}selected{% endif %}>{{ batch.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if locked_exam %}<input type="hidden" name="batch_id" value="{{ selected_batch_id }}">{% endif %}
+            </label>
+            <label>
+                Stream / Subject
+                <select name="module_id" {% if locked_exam %}disabled{% endif %}>
+                    <option value="">Choose a stream / subject</option>
+                    {% for module in module_choices %}
+                        <option value="{{ module.id }}" {% if selected_module_id == module.id|stringformat:'s' %}selected{% endif %}>{{ module.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if locked_exam %}<input type="hidden" name="module_id" value="{{ selected_module_id }}">{% endif %}
+            </label>
+            <label>
+                Exam
+                <select name="exam_id" {% if locked_exam %}disabled{% endif %}>
+                    <option value="">Choose an exam</option>
+                    {% for exam in exam_choices %}
+                        <option value="{{ exam.id }}" {% if selected_exam_id == exam.id|stringformat:'s' %}selected{% endif %}>{{ exam.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if locked_exam %}<input type="hidden" name="exam_id" value="{{ selected_exam_id }}">{% endif %}
+            </label>
+            {% if not locked_exam %}
+            <div style="display:grid; grid-template-columns: minmax(0, 1fr) auto; gap:1rem; align-items:end;">
+                <label>
+                    New exam name if not listed
+                    <input type="text" name="new_exam_title" value="{{ new_exam_title }}" placeholder="Examples: ESE-1; 2nd MBBS">
+                </label>
+                <label>
+                    Sat on
+                    <input type="date" name="new_exam_sat_on" value="{{ new_exam_sat_on }}">
+                </label>
+            </div>
+            <p class="muted">Leave these blank if you selected an existing exam. If provided, the system will create a draft exam for the chosen batch and stream.</p>
+            {% endif %}
+            <label>
+                Excel workbook (.xlsx)
+                <input type="file" name="source_file" accept=".xlsx">
+            </label>
+            <label>
+                Notes for reviewers
+                <textarea name="notes" rows="4" placeholder="Optional context about this result upload"></textarea>
+            </label>
+            <button type="submit">Upload and Stage</button>
+        </form>
+    </article>
+    <article class="panel">
+        <div class="eyebrow">Expected Columns</div>
+        <p><code>registration_number</code>, <code>final_score</code>, and <code>final_result</code> are supported for result sheets.</p>
+        <p class="muted">The system also accepts header aliases such as <code>raw_score</code>, <code>marks</code>, <code>grade</code>, and <code>result</code>. Batch and stream / subject are selected from the interface.</p>
+        <div class="eyebrow" style="margin-top:1rem;">Recent Uploads</div>
+        <table>
+            <thead><tr><th>Upload</th><th>Exam</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for upload in recent_uploads %}
+                <tr>
+                    <td><a href="{% url 'upload-review' upload.id %}">v{{ upload.version_number }} {{ upload.source_filename }}</a></td>
+                    <td>{{ upload.exam.title }}<br><span class="muted">{{ upload.exam.module.code }} - {{ upload.exam.batch.display_name }}</span></td>
+                    <td>{{ upload.get_status_display }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">No result uploads yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
+</section>
+{% endblock %}
+
+
