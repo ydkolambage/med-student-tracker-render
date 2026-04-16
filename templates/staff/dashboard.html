@@ -1,0 +1,211 @@
+{% extends "staff/base.html" %}
+{% load role_tags %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<style>
+    .dashboard-hero {
+        padding: 1.75rem 2rem;
+    }
+
+    .dashboard-hero h1 {
+        margin: 0.35rem 0 0.75rem;
+    }
+
+    .dashboard-hero p {
+        max-width: 58rem;
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-search {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .dashboard-search select {
+        flex: 0 0 13rem;
+    }
+
+    .dashboard-search input {
+        flex: 1 1 24rem;
+        min-width: 0;
+    }
+
+    .dashboard-cards {
+        align-items: stretch;
+    }
+
+    .dashboard-cards .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .dashboard-cards .panel h2,
+    .dashboard-cards .panel p {
+        margin: 0;
+    }
+
+    .dashboard-cards .panel p:last-child {
+        margin-top: auto;
+    }
+
+    .dashboard-cards .panel-admin {
+        background: rgba(255, 255, 255, 0.78);
+    }
+
+    @media (max-width: 720px) {
+        .dashboard-hero {
+            padding: 1.25rem;
+        }
+
+        .dashboard-search select,
+        .dashboard-search input,
+        .dashboard-search button {
+            width: 100%;
+            flex-basis: 100%;
+        }
+    }
+</style>
+<section class="hero dashboard-hero">
+    <div class="eyebrow">Academic Records</div>
+    <h1>Track and review student performance records</h1>
+    <p class="muted">Search for a student, review batch and stream performance, and monitor progress from one secure internal platform.</p>
+    <form method="get" class="inline dashboard-search">
+        <select id="dashboard-search-by" name="search_by" aria-label="Search category">
+            {% for value, label in search_options %}
+            <option value="{{ value }}" data-placeholder="{% if value == 'registration_number' %}Search registration no{% elif value == 'stream' %}Search stream code{% elif value == 'subject' %}Search subject title{% elif value == 'batch' %}Search batch code or name{% endif %}"{% if search_by == value %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <input id="dashboard-search" type="search" name="q" value="{{ query }}" placeholder="{{ search_placeholder }}" aria-label="Search value">
+        <button type="submit">Search</button>
+    </form>
+</section>
+<script>
+    (function () {
+        const category = document.getElementById("dashboard-search-by");
+        const searchInput = document.getElementById("dashboard-search");
+        if (!category || !searchInput) {
+            return;
+        }
+
+        const syncPlaceholder = () => {
+            const selectedOption = category.options[category.selectedIndex];
+            const placeholder = selectedOption ? selectedOption.dataset.placeholder : "";
+            if (placeholder) {
+                searchInput.placeholder = placeholder;
+            }
+        };
+
+        category.addEventListener("change", syncPlaceholder);
+        syncPlaceholder();
+    }());
+</script>
+{% if query %}
+<section class="panel">
+    <div class="eyebrow">Search Results</div>
+    <table>
+        <thead><tr><th>Student</th><th>Batch</th></tr></thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <td><a href="{% url 'student-profile' student.id %}">{{ student.registration_number }}</a><br><span class="muted">{{ student.full_name }}</span></td>
+                <td>{{ student.batch.display_name }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="2">No matching students.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+<section class="cards dashboard-cards">
+    <article class="panel">
+        <div class="eyebrow">Students</div>
+        <h2>Student search</h2>
+        <p class="muted">Open an individual student record and review performance across subjects, streams, and examinations over time.</p>
+        <p><a href="{% url 'student-search' %}">Open student search</a></p>
+    </article>
+    <article class="panel">
+        <div class="eyebrow">Cohorts</div>
+        <h2>Cohort review</h2>
+        <p class="muted">Review batch and stream performance, identify result gaps, and export filtered cohort views.</p>
+        <p><a href="{% url 'cohort-overview' %}">Open cohort review</a></p>
+    </article>
+    {% if request.user|has_any_role:"Results Officer" %}
+    <article class="panel">
+        <div class="eyebrow">Imports</div>
+        <h2>Student or Result import</h2>
+        <p class="muted">Upload student lists and result sheets through a structured review workflow before publishing.</p>
+        <p><a href="{% url 'imports-home' %}">Open imports</a></p>
+    </article>
+    {% endif %}
+    {% if request.user|has_any_role:"Registry Admin" %}
+    <article class="panel panel-admin">
+        <div class="eyebrow">Admin</div>
+        <h2>Administration</h2>
+        <p class="muted">Available for authorized users to manage corrections, system records, and advanced maintenance tasks.</p>
+        <p><a href="/admin/">Open admin</a></p>
+    </article>
+    {% endif %}
+</section>
+<section class="split">
+    <div class="panel">
+        <div class="eyebrow">Recent Exams</div>
+        <table>
+            <thead><tr><th>Exam</th><th>Stream / Subject</th><th>Batch</th><th>Results</th><th>Uploads</th></tr></thead>
+            <tbody>
+            {% for exam in exams %}
+                <tr>
+                    <td><a href="{% url 'exam-detail' exam.id %}">{{ exam.title }}</a><br><span class="muted">{{ exam.get_release_state_display }} | {{ exam.sat_on }}</span></td>
+                    <td>{{ exam.module.code }}<br><span class="muted">{{ exam.module.title }}</span></td>
+                    <td>{{ exam.batch.display_name }}</td>
+                    <td>{{ exam.result_count }}</td>
+                    <td>{{ exam.upload_count }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">No exams match this search.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="stack">
+        <section class="panel">
+            <div class="eyebrow">Pending Uploads</div>
+            <table>
+                <thead><tr><th>Upload</th><th>Status</th></tr></thead>
+                <tbody>
+                {% for upload in pending_uploads %}
+                    <tr>
+                        <td><a href="{% url 'upload-review' upload.id %}">v{{ upload.version_number }} {{ upload.exam.title }}</a><br><span class="muted">{{ upload.source_filename }}</span></td>
+                        <td>{{ upload.get_status_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">No pending uploads.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% if not query %}
+        <section class="panel">
+            <div class="eyebrow">Search Results</div>
+            <table>
+                <thead><tr><th>Student</th><th>Batch</th></tr></thead>
+                <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td><a href="{% url 'student-profile' student.id %}">{{ student.registration_number }}</a><br><span class="muted">{{ student.full_name }}</span></td>
+                        <td>{{ student.batch.display_name }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">No matching students.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

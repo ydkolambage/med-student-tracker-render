@@ -1,0 +1,96 @@
+{% extends "staff/base.html" %}
+{% block title %}Upload Review{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">Staging Review</div>
+    <h1>Upload v{{ upload.version_number }} review</h1>
+    <p class="muted">{{ upload.exam.title }} - {{ upload.exam.module.code }} - {{ upload.source_filename }}</p>
+    <div class="nav-actions">
+        <a class="pill" href="{% url 'upload-review-export' upload.id %}?bucket=all">Export all rows</a>
+        <a class="pill" href="{% url 'upload-review-export' upload.id %}?bucket=duplicate">Export duplicates</a>
+        {% if upload.status == 'staged' %}<a class="pill button-primary" href="{% url 'upload-publish-summary' upload.id %}">Publish Summary</a>{% endif %}
+    </div>
+</section>
+<section class="stats">
+    <article class="panel"><div class="eyebrow">Accepted</div><div class="stat-value">{{ accepted_rows|length }}</div></article>
+    <article class="panel"><div class="eyebrow">Duplicates</div><div class="stat-value">{{ duplicate_rows|length }}</div></article>
+    <article class="panel"><div class="eyebrow">Rejected</div><div class="stat-value">{{ rejected_rows|length }}</div></article>
+    <article class="panel"><div class="eyebrow">Status</div><div class="stat-value">{{ upload.get_status_display }}</div></article>
+</section>
+<section class="split">
+    <div class="stack">
+        <article class="panel">
+            <div class="eyebrow">Accepted Rows</div>
+            <table>
+                <thead><tr><th>Row</th><th>Student</th><th>Score</th><th>Result</th></tr></thead>
+                <tbody>
+                {% for row in accepted_rows %}
+                    <tr>
+                        <td>{{ row.row_number }}</td>
+                        <td>{% if row.student_id %}<a href="{% url 'student-profile' row.student.id %}">{{ row.registration_number }}</a><br><span class="muted">{{ row.student.full_name }}</span>{% else %}{{ row.registration_number }}{% endif %}</td>
+                        <td>{% if row.raw_score is not None %}{{ row.raw_score|floatformat:2 }}%{% else %}-{% endif %}</td>
+                        <td>{{ row.grade|default:"-" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">No accepted rows in this upload.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+        <article class="panel">
+            <div class="eyebrow">Rejected Rows</div>
+            <table>
+                <thead><tr><th>Row</th><th>Registration</th><th>Reasons</th></tr></thead>
+                <tbody>
+                {% for row in rejected_rows %}
+                    <tr><td>{{ row.row_number }}</td><td>{{ row.registration_number|default:"-" }}</td><td>{{ row.validation_errors|join:", " }}</td></tr>
+                {% empty %}
+                    <tr><td colspan="3">No rejected rows.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+        <article class="panel">
+            <div class="eyebrow">Duplicate Rows</div>
+            <table>
+                <thead><tr><th>Row</th><th>Registration</th><th>Reason</th></tr></thead>
+                <tbody>
+                {% for row in duplicate_rows %}
+                    <tr><td>{{ row.row_number }}</td><td>{{ row.registration_number }}</td><td>{{ row.duplicate_reason }}</td></tr>
+                {% empty %}
+                    <tr><td colspan="3">No duplicate rows.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+    </div>
+    <div class="stack">
+        <article class="panel">
+            <div class="eyebrow">Top Validation Reasons</div>
+            <table>
+                <thead><tr><th>Reason</th><th>Rows</th></tr></thead>
+                <tbody>
+                {% for reason, count in reason_counts %}
+                    <tr><td>{{ reason }}</td><td>{{ count }}</td></tr>
+                {% empty %}
+                    <tr><td colspan="2">No validation issues found.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+        <article class="panel">
+            <div class="eyebrow">Compare Upload Versions</div>
+            <table>
+                <thead><tr><th>Version</th><th>Summary</th></tr></thead>
+                <tbody>
+                {% for other_upload in compare_uploads %}
+                    <tr><td><a href="{% url 'upload-review' other_upload.id %}">v{{ other_upload.version_number }}</a></td><td>{{ other_upload.staged_rows }} accepted / {{ other_upload.rejected_rows }} rejected</td></tr>
+                {% empty %}
+                    <tr><td colspan="2">No other versions uploaded for this exam yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </article>
+    </div>
+</section>
+{% endblock %}

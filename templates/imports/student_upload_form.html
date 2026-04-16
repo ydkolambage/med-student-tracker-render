@@ -1,0 +1,63 @@
+{% extends "staff/base.html" %}
+{% block title %}Student Import{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">Student Import</div>
+    <h1>Stage new students for review</h1>
+    <p class="muted">Results Officers can choose a batch, upload an Excel sheet, review duplicates and validation issues, then confirm publication before student records are created.</p>
+    <div class="nav-actions">
+        <a class="pill" href="{% url 'imports-home' %}">Back to Imports</a>
+        <a class="pill" href="{% url 'result-import-new' %}">Open Results Import</a>
+    </div>
+</section>
+<section class="split">
+    <article class="panel">
+        <form method="post" enctype="multipart/form-data" class="stack">
+            {% csrf_token %}
+            <label>
+                Batch number
+                <select name="batch_id">
+                    <option value="">Choose a batch</option>
+                    {% for batch in batch_choices %}
+                        <option value="{{ batch.id }}" {% if selected_batch_id == batch.id|stringformat:'s' %}selected{% endif %}>{{ batch.label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                Add a new batch number
+                <input type="number" name="new_batch_number" min="1" step="1" value="{{ new_batch_number }}" placeholder="For example: 3">
+            </label>
+            <p class="muted">Choose an existing batch number or enter a new one. New batches are created as <code>Batch N</code>.</p>
+            <label>
+                Excel workbook (.xlsx)
+                <input type="file" name="source_file" accept=".xlsx">
+            </label>
+            <label>
+                Notes for reviewers
+                <textarea name="notes" rows="4" placeholder="Optional context about this student upload"></textarea>
+            </label>
+            <button type="submit">Upload and Stage</button>
+        </form>
+    </article>
+    <article class="panel">
+        <div class="eyebrow">Expected Columns</div>
+        <p><code>registration_number</code>, <code>first_name</code>, and <code>last_name</code> are required.</p>
+        <p class="muted">Optional columns: <code>university_email</code>, <code>status</code>. Batch is selected from the interface.</p>
+        <div class="eyebrow" style="margin-top:1rem;">Recent Uploads</div>
+        <table>
+            <thead><tr><th>Upload</th><th>Batch</th><th>Status</th></tr></thead>
+            <tbody>
+            {% for upload in recent_uploads %}
+                <tr>
+                    <td><a href="{% url 'student-upload-review' upload.id %}">{{ upload.source_filename }}</a></td>
+                    <td>{{ upload.batch.display_name }}</td>
+                    <td>{{ upload.get_status_display }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">No student uploads yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,200 @@
+{% load role_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Staff Workflow{% endblock %}</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #183153;
+            --muted: #65758b;
+            --line: #d6dfeb;
+            --panel: rgba(255, 255, 255, 0.9);
+            --accent: #005f73;
+            --accent-soft: #e1f1f0;
+            --warm: #ee9b00;
+            --danger: #b42318;
+            --bg-top: #f7fbff;
+            --bg-bottom: #eef4ea;
+            --section-gap: 1.5rem;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(0, 95, 115, 0.12), transparent 32%),
+                radial-gradient(circle at right 20%, rgba(238, 155, 0, 0.12), transparent 25%),
+                linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+            min-height: 100vh;
+        }
+        a { color: var(--accent); }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(18px);
+            background: rgba(247, 251, 255, 0.88);
+            border-bottom: 1px solid rgba(214, 223, 235, 0.9);
+        }
+        .shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.25rem 3rem;
+        }
+        .shell > * + * {
+            margin-top: var(--section-gap);
+        }
+        .nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 1.25rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .nav-links, .nav-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+        .brand {
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--ink);
+            letter-spacing: 0.02em;
+        }
+        .pill, button, .button {
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: white;
+            padding: 0.7rem 1rem;
+            font: inherit;
+            text-decoration: none;
+            color: var(--ink);
+            cursor: pointer;
+        }
+        .button-primary, button[type="submit"] {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        .hero {
+            display: grid;
+            gap: 1rem;
+            padding: 1.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(225,241,240,0.95));
+            border: 1px solid rgba(214, 223, 235, 0.9);
+            border-radius: 1.5rem;
+            box-shadow: 0 18px 50px rgba(24, 49, 83, 0.08);
+        }
+        .page-grid, .cards, .stats { display: grid; gap: 1rem; }
+        .cards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .stats { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+        .panel {
+            background: var(--panel);
+            border: 1px solid rgba(214, 223, 235, 0.95);
+            border-radius: 1.25rem;
+            padding: 1.15rem;
+            box-shadow: 0 12px 34px rgba(24, 49, 83, 0.06);
+        }
+        .stat-value { font-size: 1.7rem; font-weight: 700; margin: 0.2rem 0; }
+        .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; color: var(--muted); }
+        .muted { color: var(--muted); }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-right: 0.35rem;
+        }
+        .badge-warn { background: #fff0c2; color: #8a5a00; }
+        .badge-danger { background: #ffe4e1; color: var(--danger); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.8rem 0.65rem;
+            border-bottom: 1px solid rgba(214, 223, 235, 0.9);
+            vertical-align: top;
+        }
+        th { color: var(--muted); font-weight: 600; }
+        form.inline, .filters { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: end; }
+        .nav-actions form {
+            margin: 0;
+        }
+        .nav-actions .pill {
+            display: inline-block;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 0.85rem;
+            border-radius: 0.9rem;
+            border: 1px solid var(--line);
+            font: inherit;
+            background: rgba(255,255,255,0.95);
+        }
+        label { display: grid; gap: 0.35rem; font-size: 0.95rem; color: var(--muted); }
+        .messages { display: grid; gap: 0.75rem; margin: 0; }
+        .message {
+            padding: 0.85rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid var(--line);
+            background: white;
+        }
+        .message.error { border-color: #f3b6b1; background: #fff0ee; }
+        .message.success { border-color: #bde1c5; background: #eff9f1; }
+        .split { display: grid; gap: 1rem; grid-template-columns: 2fr 1fr; }
+        .stack { display: grid; gap: 1rem; }
+        @media (max-width: 860px) {
+            .split { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <div class="nav-links">
+                <a class="brand" href="{% url 'staff-dashboard' %}">Medical Student Tracker</a>
+                <a class="pill" href="{% url 'student-search' %}">Student Search</a>
+                <a class="pill" href="{% url 'cohort-overview' %}">Cohorts</a>
+                {% if request.user|has_any_role:"Results Officer" %}
+                    <a class="pill" href="{% url 'imports-home' %}">Imports</a>
+                {% endif %}
+                {% if request.user|has_any_role:"Registry Admin" %}
+                    <a class="pill" href="/admin/">Admin</a>
+                {% endif %}
+            </div>
+            <div class="nav-actions">
+                {% if request.user.is_authenticated %}
+                    <span class="muted">{{ request.user.get_username }}</span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="pill" type="submit">Log out</button>
+                    </form>
+                {% else %}
+                    <a class="pill" href="{% url 'login' %}">Log in</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <main class="shell">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
