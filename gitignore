@@ -1,0 +1,9 @@
+*.pyc
+__pycache__/
+.env
+.venv/
+db.sqlite3
+media/
+staticfiles/
+var/
+Backups_daily_sql/
