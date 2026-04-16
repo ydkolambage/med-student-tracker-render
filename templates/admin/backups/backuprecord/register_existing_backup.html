@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{{ changelist_url }}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; Register existing backup
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Register existing backup</h1>
+    <p>Browsers cannot directly browse the server filesystem, so enter the absolute server path for an existing backup folder or SQL file.</p>
+<div class="module" style="padding: 1rem; margin-bottom: 1rem;">
+    <h2>Configured backup roots</h2>
+    <p><strong>Full system backups:</strong> {{ full_backup_root }}</p>
+    <p><strong>Daily SQL backups:</strong> {{ daily_sql_root }}</p>
+</div>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <fieldset class="module aligned">
+            {{ form.as_p }}
+        </fieldset>
+        <div class="submit-row">
+            <input type="submit" value="Register backup" class="default">
+            <a href="{{ changelist_url }}" class="closelink">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

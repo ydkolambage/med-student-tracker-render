@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url 'admin:backups_backuprecord_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; Confirm SQL restore
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Confirm SQL restore</h1>
+    <p>This will restore the configured PostgreSQL database from the selected backup entry.</p>
+    <p><strong>Selected backup:</strong> {{ record }}</p>
+    <p><strong>Backup path:</strong> {{ record.filesystem_path }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="{{ action_name }}">
+        <input type="hidden" name="apply" value="yes">
+        {% for item in queryset %}
+        <input type="hidden" name="{{ action_checkbox_name }}" value="{{ item.pk }}">
+        {% endfor %}
+        <div class="submit-row">
+            <input type="submit" value="Restore database" class="default">
+            <a href="{% url 'admin:backups_backuprecord_changelist' %}" class="closelink">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
