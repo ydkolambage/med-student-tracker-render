@@ -1,0 +1,650 @@
+[
+  {
+    "model": "students.department",
+    "pk": 1,
+    "fields": {
+      "code": "BSC",
+      "name": "Basic Sciences",
+      "is_active": true
+    }
+  },
+  {
+    "model": "students.batch",
+    "pk": 1,
+    "fields": {
+      "code": "BATCH-1",
+      "display_name": "Batch 1",
+      "academic_start_year": 2025,
+      "graduation_year": 2030,
+      "is_active": true
+    }
+  },
+  {
+    "model": "students.module",
+    "pk": 1,
+    "fields": {
+      "department": 1,
+      "batch": 1,
+      "code": "2NDMBBS",
+      "title": "2nd MBBS",
+      "semester": "1-3",
+      "is_active": true
+    }
+  },
+  {
+    "model": "results.exam",
+    "pk": 1,
+    "fields": {
+      "module": 1,
+      "title": "2nd MBBS",
+      "year_of_study": 2,
+      "sat_on": "2026-06-15",
+      "maximum_score": "100.00",
+      "pass_mark": "50.00",
+      "weight_percentage": "100.00",
+      "release_state": "draft",
+      "release_version": 0,
+      "results_released_at": null
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 1,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250001",
+      "first_name": "Student01",
+      "last_name": "BasicSci",
+      "university_email": "student01@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 2,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250002",
+      "first_name": "Student02",
+      "last_name": "BasicSci",
+      "university_email": "student02@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 3,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250003",
+      "first_name": "Student03",
+      "last_name": "BasicSci",
+      "university_email": "student03@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 4,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250004",
+      "first_name": "Student04",
+      "last_name": "BasicSci",
+      "university_email": "student04@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 5,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250005",
+      "first_name": "Student05",
+      "last_name": "BasicSci",
+      "university_email": "student05@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 6,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250006",
+      "first_name": "Student06",
+      "last_name": "BasicSci",
+      "university_email": "student06@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 7,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250007",
+      "first_name": "Student07",
+      "last_name": "BasicSci",
+      "university_email": "student07@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 8,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250008",
+      "first_name": "Student08",
+      "last_name": "BasicSci",
+      "university_email": "student08@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 9,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250009",
+      "first_name": "Student09",
+      "last_name": "BasicSci",
+      "university_email": "student09@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 10,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250010",
+      "first_name": "Student10",
+      "last_name": "BasicSci",
+      "university_email": "student10@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 11,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250011",
+      "first_name": "Student11",
+      "last_name": "BasicSci",
+      "university_email": "student11@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 12,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250012",
+      "first_name": "Student12",
+      "last_name": "BasicSci",
+      "university_email": "student12@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 13,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250013",
+      "first_name": "Student13",
+      "last_name": "BasicSci",
+      "university_email": "student13@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 14,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250014",
+      "first_name": "Student14",
+      "last_name": "BasicSci",
+      "university_email": "student14@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 15,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250015",
+      "first_name": "Student15",
+      "last_name": "BasicSci",
+      "university_email": "student15@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 16,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250016",
+      "first_name": "Student16",
+      "last_name": "BasicSci",
+      "university_email": "student16@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 17,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250017",
+      "first_name": "Student17",
+      "last_name": "BasicSci",
+      "university_email": "student17@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 18,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250018",
+      "first_name": "Student18",
+      "last_name": "BasicSci",
+      "university_email": "student18@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 19,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250019",
+      "first_name": "Student19",
+      "last_name": "BasicSci",
+      "university_email": "student19@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 20,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250020",
+      "first_name": "Student20",
+      "last_name": "BasicSci",
+      "university_email": "student20@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 21,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250021",
+      "first_name": "Student21",
+      "last_name": "BasicSci",
+      "university_email": "student21@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 22,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250022",
+      "first_name": "Student22",
+      "last_name": "BasicSci",
+      "university_email": "student22@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 23,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250023",
+      "first_name": "Student23",
+      "last_name": "BasicSci",
+      "university_email": "student23@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 24,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250024",
+      "first_name": "Student24",
+      "last_name": "BasicSci",
+      "university_email": "student24@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 25,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250025",
+      "first_name": "Student25",
+      "last_name": "BasicSci",
+      "university_email": "student25@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 26,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250026",
+      "first_name": "Student26",
+      "last_name": "BasicSci",
+      "university_email": "student26@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 27,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250027",
+      "first_name": "Student27",
+      "last_name": "BasicSci",
+      "university_email": "student27@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 28,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250028",
+      "first_name": "Student28",
+      "last_name": "BasicSci",
+      "university_email": "student28@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 29,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250029",
+      "first_name": "Student29",
+      "last_name": "BasicSci",
+      "university_email": "student29@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 30,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250030",
+      "first_name": "Student30",
+      "last_name": "BasicSci",
+      "university_email": "student30@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 31,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250031",
+      "first_name": "Student31",
+      "last_name": "BasicSci",
+      "university_email": "student31@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 32,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250032",
+      "first_name": "Student32",
+      "last_name": "BasicSci",
+      "university_email": "student32@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 33,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250033",
+      "first_name": "Student33",
+      "last_name": "BasicSci",
+      "university_email": "student33@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 34,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250034",
+      "first_name": "Student34",
+      "last_name": "BasicSci",
+      "university_email": "student34@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 35,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250035",
+      "first_name": "Student35",
+      "last_name": "BasicSci",
+      "university_email": "student35@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 36,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250036",
+      "first_name": "Student36",
+      "last_name": "BasicSci",
+      "university_email": "student36@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 37,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250037",
+      "first_name": "Student37",
+      "last_name": "BasicSci",
+      "university_email": "student37@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 38,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250038",
+      "first_name": "Student38",
+      "last_name": "BasicSci",
+      "university_email": "student38@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 39,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250039",
+      "first_name": "Student39",
+      "last_name": "BasicSci",
+      "university_email": "student39@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 40,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250040",
+      "first_name": "Student40",
+      "last_name": "BasicSci",
+      "university_email": "student40@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 41,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250041",
+      "first_name": "Student41",
+      "last_name": "BasicSci",
+      "university_email": "student41@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 42,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250042",
+      "first_name": "Student42",
+      "last_name": "BasicSci",
+      "university_email": "student42@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 43,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250043",
+      "first_name": "Student43",
+      "last_name": "BasicSci",
+      "university_email": "student43@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 44,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250044",
+      "first_name": "Student44",
+      "last_name": "BasicSci",
+      "university_email": "student44@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 45,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250045",
+      "first_name": "Student45",
+      "last_name": "BasicSci",
+      "university_email": "student45@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 46,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250046",
+      "first_name": "Student46",
+      "last_name": "BasicSci",
+      "university_email": "student46@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 47,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250047",
+      "first_name": "Student47",
+      "last_name": "BasicSci",
+      "university_email": "student47@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 48,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250048",
+      "first_name": "Student48",
+      "last_name": "BasicSci",
+      "university_email": "student48@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 49,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250049",
+      "first_name": "Student49",
+      "last_name": "BasicSci",
+      "university_email": "student49@example.edu",
+      "status": "active"
+    }
+  },
+  {
+    "model": "students.student",
+    "pk": 50,
+    "fields": {
+      "batch": 1,
+      "registration_number": "BSC20250050",
+      "first_name": "Student50",
+      "last_name": "BasicSci",
+      "university_email": "student50@example.edu",
+      "status": "active"
+    }
+  }
+]
